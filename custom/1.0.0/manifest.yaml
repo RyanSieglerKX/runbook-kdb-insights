@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://code.kx.com/insights/enterprise/packaging/schemas/package.json#/$defs/Manifest
+uuid: 8d2ce13a-0e70-494a-83ed-2b004e6dc585
+name: custom
+version: 1.0.0
+dependencies: []
+metadata:
+  authors:
+  - name: me
+  pakxtime: '2025-05-14T16:12:12.946822'
+entrypoints:
+  aggregator: agg.q
+  data-access: da.q
+system:
+  _pakx_version: 1.13.1
+tables: {}
+databases: {}
+pipelines: {}
+views: {}
+patches: []
