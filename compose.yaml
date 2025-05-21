@@ -19,9 +19,10 @@ services:
       - KX_KURL_DISABLE_AUTO_REGISTER=1
       # - KXI_CONFIG_FILE=/opt/kx/cfg/sp/sp-config.json
       # - KXI_SP_BETA_FEATURES=true
-      - RT_CONFIG=http://rt-data-0:${kxi_port_rt}
-      - RT_LOG_PATH=/sp/checkpoints/rt_pub
-
+      - RT_CONFIG=http://rt-data-0:${kxi_port_rt}  ## ??? Remove??
+      - RT_LOG_PATH=/sp/checkpoints/ ######remove??
+      - RT_TOPIC_PREFIX=rt-
+      - RT_STREAM=data
     ports:
     #  - 127.0.0.1::5000
       - ${kxi_port_sp}:${kxi_port_sp}
@@ -31,10 +32,10 @@ services:
       - ${kxi_dir_config}:/mnt/config 
       #- ${kxi_dir_logs}:/mnt/logs
       #- ${kxi_dir_logs}/sp/checkpoints/rt_pub:/sp/checkpoints/rt_pub
-      - ${kxi_dir_logs}/sp:/sp
+      - ${kxi_dir_logs}/sp:/sp  ##########
     networks: [kx]
-    #env_file:
-    #  - .env 
+    env_file:   ## Remove??
+      - .env 
     stdin_open: true
     tty: true     
 
@@ -141,6 +142,8 @@ services:
       - KXI_RT_EOI_LOG_PATH=/mnt/logs/eoi
       - KXI_CONFIG_FILE=/mnt/config/metrics-cfg/sm-config.json
       - RT_TOPIC_PREFIX=rt-
+      - RT_STREAM=data
+      - RT_LOG_PATH=/mnt/logs/sm   ##Is this the right path?
       - RT_REPLICAS=1
       #- KXI_LATE_DATA=true
     ports:
@@ -175,9 +178,11 @@ services:
       - RAFT_LOG_SIZE=${kxi_rt_log_size}
       - RAFT_CHUNK_SIZE=${kxi_rt_chunk_size}
     ports:
+      - ${kxi_port_rt}:${kxi_port_rt}
+      - ${kxi_port_rt_pull_rep}:${kxi_port_rt_pull_rep}
       - ${kxi_port_rt_push_rep}:${kxi_port_rt_push_rep}
     restart: unless-stopped
     networks: [kx]
     volumes:
-      - ${kxi_dir_logs_rt}:/s
+      - ${kxi_dir_logs_rt}:/s   ## Is this the right path?
       - ${kxi_dir_lic}:/opt/kx/lic
