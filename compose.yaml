@@ -78,7 +78,6 @@ services:
     ports:
       - ${kxi_port_gw_qipc}:${kxi_port_gw_qipc}
       - ${kxi_port_gw_http}:${kxi_port_gw_http}
-      #- 8081:8081          # metrics
       - ${kxi_port_gw_metrics}:${kxi_port_gw_metrics}
     deploy:  # Optional: deploy multiple replicas.
       mode: replicated
@@ -107,7 +106,7 @@ services:
       - KXI_SECURE_ENABLED=0
       #- KXI_LATE_DATA=true
       # Optional for gathering metrics
-      - KXI_CONFIG_FILE=/metrics-cfg/da-config.json  #### do i need this here if it is in config-metrics.yaml?
+      - KXI_CONFIG_FILE=/metrics-cfg/da-config.json  
       # Optional for gathering metrics
       #- KXI_DA_START_SIDECARS=true
       - KXI_PACKAGES=custom:1.0.0
@@ -121,10 +120,6 @@ services:
       - ${kxi_dir_sidecar_cfg}:/metrics-cfg/  # Optional for gathering metics
       - ${kxi_dir_pkgs}:/opt/kx/packages
     ports:
-      #- 5080:5080 #DA 
-      #- 5081:5081 
-      #- 5082:5082 
-      #- 5083:5083
       - ${kxi_port_da}:${kxi_port_da}
       - ${kxi_port_da_rdb}:${kxi_port_da_rdb}
       - ${kxi_port_da_idb}:${kxi_port_da_idb}
