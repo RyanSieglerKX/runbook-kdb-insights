@@ -8,7 +8,6 @@ services:
   sp-worker:
     image: ${kxi_img_sp}
     hostname: kxi-sp
-    #command: -p 5000
     restart: "always"
     depends_on:
       - kxi-rt   
@@ -17,24 +16,16 @@ services:
       - KXI_SP_SPEC=/mnt/config/sp/taq.py
       - KXI_PORT=${kxi_port_sp}
       - KX_KURL_DISABLE_AUTO_REGISTER=1
-      # - KXI_CONFIG_FILE=/opt/kx/cfg/sp/sp-config.json
-      # - KXI_SP_BETA_FEATURES=true
-      #- RT_CONFIG=http://rt-data-0:${kxi_port_rt}  ## ??? Remove??
-      #- RT_LOG_PATH=/sp/checkpoints/ ######remove??
       - RT_TOPIC_PREFIX=rt-
       - RT_STREAM=data
     ports:
-    #  - 127.0.0.1::5000
       - ${kxi_port_sp}:${kxi_port_sp}
     volumes:
       - ${kxi_dir_lic}:/opt/kx/lic 
-      #- ${kxi_dir_sp}:/mnt/sp   
       - ${kxi_dir_config}:/mnt/config 
-      #- ${kxi_dir_logs}:/mnt/logs
-      #- ${kxi_dir_logs}/sp/checkpoints/rt_pub:/sp/checkpoints/rt_pub
-      - ${kxi_dir_logs}/sp:/sp  ##########
+      - ${kxi_dir_logs_sp}:/sp  ########## is this correct?
     networks: [kx]
-    env_file:   ## Remove??
+    env_file:
       - .env 
     stdin_open: true
     tty: true     
@@ -77,7 +68,7 @@ services:
     hostname: kxi-gw
     environment:
       - KXI_SG_METRICS_ENABLED=true
-      - KXI_SG_METRICS_PORT=8081 #81?
+      - KXI_SG_METRICS_PORT=8081 
       - KXI_SG_METRICS_ENDPOINT=/metrics-cfg  ##### is this correct?
       - GATEWAY_QIPC_PORT=${kxi_port_gw_qipc}
       - GATEWAY_HTTP_PORT=${kxi_port_gw_http}
@@ -87,7 +78,8 @@ services:
     ports:
       - ${kxi_port_gw_qipc}:${kxi_port_gw_qipc}
       - ${kxi_port_gw_http}:${kxi_port_gw_http}
-      - 8081:8081          # metrics
+      #- 8081:8081          # metrics
+      - ${kxi_port_gw_metrics}:${kxi_port_gw_metrics}
     deploy:  # Optional: deploy multiple replicas.
       mode: replicated
       replicas: 1
@@ -115,7 +107,7 @@ services:
       - KXI_SECURE_ENABLED=0
       #- KXI_LATE_DATA=true
       # Optional for gathering metrics
-      - KXI_CONFIG_FILE=/metrics-cfg/da-config.json
+      - KXI_CONFIG_FILE=/metrics-cfg/da-config.json  #### do i need this here if it is in config-metrics.yaml?
       # Optional for gathering metrics
       #- KXI_DA_START_SIDECARS=true
       - KXI_PACKAGES=custom:1.0.0
@@ -129,15 +121,19 @@ services:
       - ${kxi_dir_sidecar_cfg}:/metrics-cfg/  # Optional for gathering metics
       - ${kxi_dir_pkgs}:/opt/kx/packages
     ports:
-      - 5080:5080 #DA 
-      - 5081:5081 
-      - 5082:5082 
-      - 5083:5083
+      #- 5080:5080 #DA 
+      #- 5081:5081 
+      #- 5082:5082 
+      #- 5083:5083
+      - ${kxi_port_da}:${kxi_port_da}
+      - ${kxi_port_da_rdb}:${kxi_port_da_rdb}
+      - ${kxi_port_da_idb}:${kxi_port_da_idb}
+      - ${kxi_port_da_hdb}:${kxi_port_da_hdb}
 
   kxi-sm:
     hostname: kxi-sm
     image: ${kxi_img_sm}
-    command: -p 10001 #? 20001
+    command: -p 10001 
     environment:
       - KXI_NAME=kxi-sm
       - KXI_SC=sm
@@ -180,7 +176,7 @@ services:
       - RT_LOGLEVEL_CONSOLE=${kxi_log_level}
       - RT_QURAFT_LOG_LEVEL=${kxi_log_level}
       - RT_SEQ_SESSION_PATH=/s/session
-      - RT_LOG_LEADER=
+      - RT_LOG_LEADER=                      ##### remove?
       - RAFT_HEARTBEAT=${kxi_rt_heartbeat}
       - RAFT_LOG_SIZE=${kxi_rt_log_size}
       - RAFT_CHUNK_SIZE=${kxi_rt_chunk_size}
