@@ -45,14 +45,43 @@ services:
       - ${kxi_dir_lic}:/opt/kx/lic
     command: -p 8080
     networks: [kx]
-  # https://prometheus.io/docs/prometheus/latest/installation/
+  rdb-sidecar:
+    image: ${kxi_sidecar}
+    environment:
+      - KXI_CONFIG_FILE=/metrics-cfg/rdb-config.json
+    volumes:
+      - ./lic:/opt/kx/lic  
+      - ${kxi_dir_sidecar_cfg}:/metrics-cfg       
+    command: -p 8080   
+    networks: [kx]
+  idb-sidecar:
+    image: ${kxi_sidecar}
+    environment:
+      - KXI_CONFIG_FILE=/metrics-cfg/idb-config.json
+    volumes:
+      - ./lic:/opt/kx/lic  
+      - ${kxi_dir_sidecar_cfg}:/metrics-cfg    
+    command: -p 8080  
+    networks: [kx]
+  hdb-sidecar:
+    image: ${kxi_sidecar}
+    environment:
+      - KXI_CONFIG_FILE=/metrics-cfg/hdb-config.json
+    volumes:
+      - ./lic:/opt/kx/lic  
+      - ${kxi_dir_sidecar_cfg}:/metrics-cfg     
+    command: -p 8080   
+    stdin_open: true
+    tty: true 
+    networks: [kx]
+  #https://prometheus.io/docs/prometheus/latest/installation/
   prometheus:
     hostname: promstats
     image: prom/prometheus
     ports:
       - 9090:9090
     volumes:
-      - ./prometheus-config.yml:/etc/prometheus/prometheus.yml
+      - ./config/prometheus-config.yml:/etc/prometheus/prometheus.yml
     networks: [kx]
   grafana:
     image: grafana/grafana-oss
@@ -65,5 +94,5 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/ingest.json
     volumes:
-      - ./grafana-cfg/grafana/provisioning:/etc/grafana/provisioning
-      - ./grafana-cfg/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./config/grafana-cfg/grafana/provisioning:/etc/grafana/provisioning
+      - ./config/grafana-cfg/grafana/dashboards:/var/lib/grafana/dashboards

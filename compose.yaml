@@ -19,8 +19,8 @@ services:
       - KX_KURL_DISABLE_AUTO_REGISTER=1
       # - KXI_CONFIG_FILE=/opt/kx/cfg/sp/sp-config.json
       # - KXI_SP_BETA_FEATURES=true
-      - RT_CONFIG=http://rt-data-0:${kxi_port_rt}  ## ??? Remove??
-      - RT_LOG_PATH=/sp/checkpoints/ ######remove??
+      #- RT_CONFIG=http://rt-data-0:${kxi_port_rt}  ## ??? Remove??
+      #- RT_LOG_PATH=/sp/checkpoints/ ######remove??
       - RT_TOPIC_PREFIX=rt-
       - RT_STREAM=data
     ports:
@@ -28,7 +28,7 @@ services:
       - ${kxi_port_sp}:${kxi_port_sp}
     volumes:
       - ${kxi_dir_lic}:/opt/kx/lic 
-      - ${kxi_dir_sp}:/mnt/sp   
+      #- ${kxi_dir_sp}:/mnt/sp   
       - ${kxi_dir_config}:/mnt/config 
       #- ${kxi_dir_logs}:/mnt/logs
       #- ${kxi_dir_logs}/sp/checkpoints/rt_pub:/sp/checkpoints/rt_pub
@@ -76,8 +76,9 @@ services:
     image: ${kxi_img_gw}
     hostname: kxi-gw
     environment:
-      - KXI_SG_METRICS_ENABLED=false
-      - KXI_SG_METRICS_PORT=81
+      - KXI_SG_METRICS_ENABLED=true
+      - KXI_SG_METRICS_PORT=8081 #81?
+      - KXI_SG_METRICS_ENDPOINT=/metrics-cfg  ##### is this correct?
       - GATEWAY_QIPC_PORT=${kxi_port_gw_qipc}
       - GATEWAY_HTTP_PORT=${kxi_port_gw_http}
       - KXI_SG_RC_ADDR=kxi-rc:${kxi_port_rc}
@@ -86,6 +87,7 @@ services:
     ports:
       - ${kxi_port_gw_qipc}:${kxi_port_gw_qipc}
       - ${kxi_port_gw_http}:${kxi_port_gw_http}
+      - 8081:8081          # metrics
     deploy:  # Optional: deploy multiple replicas.
       mode: replicated
       replicas: 1
@@ -115,7 +117,7 @@ services:
       # Optional for gathering metrics
       - KXI_CONFIG_FILE=/metrics-cfg/da-config.json
       # Optional for gathering metrics
-      - KXI_DA_START_SIDECARS=false
+      #- KXI_DA_START_SIDECARS=true
       - KXI_PACKAGES=custom:1.0.0
       - KX_PACKAGE_PATH=/opt/kx/packages
     networks: [kx]
@@ -126,6 +128,11 @@ services:
       - ${kxi_dir_lic}:/opt/kx/lic
       - ${kxi_dir_sidecar_cfg}:/metrics-cfg/  # Optional for gathering metics
       - ${kxi_dir_pkgs}:/opt/kx/packages
+    ports:
+      - 5080:5080 #DA 
+      - 5081:5081 
+      - 5082:5082 
+      - 5083:5083
 
   kxi-sm:
     hostname: kxi-sm
