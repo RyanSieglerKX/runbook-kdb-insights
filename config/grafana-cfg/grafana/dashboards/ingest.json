@@ -112,7 +112,7 @@
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "rt out messages",
           "range": true,
           "refId": "A",
           "useBackend": false
@@ -128,7 +128,7 @@
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "rt in messages",
           "range": true,
           "refId": "B",
           "useBackend": false
@@ -225,7 +225,7 @@
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": false,
-          "legendFormat": "__auto",
+          "legendFormat": "rdb messages",
           "range": true,
           "refId": "A",
           "useBackend": false
@@ -237,7 +237,7 @@
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": false,
-          "legendFormat": "__auto",
+          "legendFormat": "idb messages",
           "range": true,
           "refId": "B",
           "useBackend": false
@@ -249,13 +249,13 @@
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": false,
-          "legendFormat": "__auto",
+          "legendFormat": "hdb messages",
           "range": true,
           "refId": "C",
           "useBackend": false
         }
       ],
-      "title": "Number of Msgs received - RDB",
+      "title": "Number of Msgs received - RDB, IDB, HDB",
       "type": "timeseries"
     },
     {
@@ -350,7 +350,7 @@
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "{{instance}} - da requests",
           "range": true,
           "refId": "A",
           "useBackend": false
@@ -367,7 +367,7 @@
           "hide": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "sg requests",
           "range": true,
           "refId": "B",
           "useBackend": false
@@ -384,7 +384,7 @@
           "hide": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "rc requests",
           "range": true,
           "refId": "C",
           "useBackend": false
@@ -401,7 +401,7 @@
           "hide": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "agg requests",
           "range": true,
           "refId": "D",
           "useBackend": false
@@ -500,7 +500,7 @@
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "{{instance}} - Memory usage",
           "range": true,
           "refId": "A",
           "useBackend": false
