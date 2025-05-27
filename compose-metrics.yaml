@@ -45,6 +45,15 @@ services:
       - ${kxi_dir_lic}:/opt/kx/lic
     command: -p 8080
     networks: [kx]
+  # da-sidecar:
+  #   image: ${kxi_sidecar}
+  #   environment:
+  #     - KXI_CONFIG_FILE=/metrics-cfg/da-config.json
+  #   volumes:
+  #     - ./lic:/opt/kx/lic  
+  #     - ${kxi_dir_sidecar_cfg}:/metrics-cfg       
+  #   command: -p 8080   
+  #   networks: [kx]
   rdb-sidecar:
     image: ${kxi_sidecar}
     environment:

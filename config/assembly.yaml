@@ -144,7 +144,7 @@ mounts:
 
 elements:
   dap:
-    smEndpoints: kxi-sm:10001
+    smEndpoints: kxi-sm:10001   ##REMOVE THIS?
     instances:
       dap:
         mountList: [rdb, idb, hdb]
@@ -158,7 +158,8 @@ elements:
       - name: idb
         mount: idb
         schedule:
-          freq: 0D00:10:00 # every 10 minutes
+          freq: 0D00:02:00
+          #freq: 0D00:10:00 # every 10 minutes
       - name: hdb1
         mount: hdb
         schedule:

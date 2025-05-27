@@ -225,37 +225,13 @@
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": false,
-          "legendFormat": "rdb messages",
+          "legendFormat": "messages to RDB",
           "range": true,
           "refId": "A",
           "useBackend": false
-        },
-        {
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "kxi_da_stream_msgs{instance=\"idb-sidecar:8080\"}",
-          "fullMetaSearch": false,
-          "hide": false,
-          "includeNullMetadata": false,
-          "legendFormat": "idb messages",
-          "range": true,
-          "refId": "B",
-          "useBackend": false
-        },
-        {
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "kxi_da_stream_msgs{instance=\"hdb-sidecar:8080\"}",
-          "fullMetaSearch": false,
-          "hide": false,
-          "includeNullMetadata": false,
-          "legendFormat": "hdb messages",
-          "range": true,
-          "refId": "C",
-          "useBackend": false
         }
       ],
-      "title": "Number of Msgs received - RDB, IDB, HDB",
+      "title": "Number of Msgs received - RDB",
       "type": "timeseries"
     },
     {
@@ -507,6 +483,105 @@
         }
       ],
       "title": "Database Services RAM usage",
+      "type": "timeseries"
+    },
+        {
+      "datasource": {},
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 25
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "kxi_sm_eoi_records",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "SM Messages Published EoI",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "SM Messages Published EoI",
       "type": "timeseries"
     }
   ],

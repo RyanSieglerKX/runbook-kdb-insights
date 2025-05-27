@@ -39,9 +39,11 @@ services:
       - KXI_LOG_FORMAT=${kxi_log_format}
       - KXI_LOG_LEVELS=default:${kxi_log_level}
       - KXI_ALLOWED_SBX_APIS=${kxi_apis}
+      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/rc-config.json
     networks: [kx]
     volumes:
       - ${kxi_dir_lic}:/opt/kx/lic
+      - ${kxi_dir_config}:/mnt/config
 
   kxi-agg:
     image: ${kxi_img_agg}
@@ -54,6 +56,7 @@ services:
       - KXI_LOG_LEVELS=default:${kxi_log_level}
       - KXI_PACKAGES=custom:1.0.0
       - KX_PACKAGE_PATH=/opt/kx/packages/
+      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/agg-config.json
     deploy:  # Optional: deploy multiple replicas.
       mode: replicated
       replicas: 1
@@ -69,7 +72,7 @@ services:
     environment:
       - KXI_SG_METRICS_ENABLED=true
       - KXI_SG_METRICS_PORT=8081 
-      - KXI_SG_METRICS_ENDPOINT=/metrics-cfg  ##### is this correct?
+      - KXI_SG_METRICS_ENDPOINT=/metrics  
       - GATEWAY_QIPC_PORT=${kxi_port_gw_qipc}
       - GATEWAY_HTTP_PORT=${kxi_port_gw_http}
       - KXI_SG_RC_ADDR=kxi-rc:${kxi_port_rc}
@@ -106,7 +109,8 @@ services:
       - KXI_SECURE_ENABLED=0
       #- KXI_LATE_DATA=true
       # Optional for gathering metrics
-      - KXI_CONFIG_FILE=/metrics-cfg/da-config.json  
+      #- KXI_CONFIG_FILE=/metrics-cfg/da-config.json  
+      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/da-config.json 
       # Optional for gathering metrics
       #- KXI_DA_START_SIDECARS=true
       - KXI_PACKAGES=custom:1.0.0
@@ -117,7 +121,7 @@ services:
       - ${kxi_dir_db}:/mnt/db
       - ${kxi_dir_logs}:/mnt/logs
       - ${kxi_dir_lic}:/opt/kx/lic
-      - ${kxi_dir_sidecar_cfg}:/metrics-cfg/  # Optional for gathering metics
+      - ${kxi_dir_sidecar_cfg}:/metrics-cfg/  # Optional for gathering metics (IS THIS CORRECT??)
       - ${kxi_dir_pkgs}:/opt/kx/packages
     ports:
       - ${kxi_port_da}:${kxi_port_da}
@@ -128,7 +132,7 @@ services:
   kxi-sm:
     hostname: kxi-sm
     image: ${kxi_img_sm}
-    command: -p 10001 
+    #command: -p 10001 #Necessary? 5/26
     environment:
       - KXI_NAME=kxi-sm
       - KXI_SC=sm
@@ -138,7 +142,8 @@ services:
       - KXI_LOG_LEVELS=default:${kxi_log_level}
       - KXI_RT_SM_LOG_PATH=/mnt/logs/sm
       - KXI_RT_EOI_LOG_PATH=/mnt/logs/eoi
-      - KXI_CONFIG_FILE=/mnt/config/metrics-cfg/sm-config.json
+      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/sm-config.json  #/mnt/config/metrics-cfg/sm-config.json
+      - KXI_ALLOWED_SBX_APIS=${kxi_apis}  ##added this
       - RT_TOPIC_PREFIX=rt-
       - RT_STREAM=data
       - RT_LOG_PATH=/mnt/logs/sm   ##Is this the right path?

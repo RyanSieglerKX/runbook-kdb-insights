@@ -4,5 +4,15 @@ global:
 
 scrape_configs:
   - job_name: 'monitoring'
+    metrics_path: /metrics
     static_configs:
-            - targets: ['sm-sidecar:8080', 'rt-sidecar:8080', 'agg-sidecar:8080', 'rc-sidecar:8080', 'kxi-da:8080', 'rdb-sidecar:8080','idb-sidecar:8080', 'hdb-sidecar:8080', 'kxi-gw:8081']
+            - targets: 
+              #- 'da-sidecar:8080'
+              - 'sm-sidecar:8080'
+              - 'rt-sidecar:8080'
+              - 'agg-sidecar:8080'
+              - 'rc-sidecar:8080'
+              - 'rdb-sidecar:8080'
+              - 'idb-sidecar:8080'
+              - 'hdb-sidecar:8080'
+              - 'kxi-gw:8081'
