@@ -1,0 +1,29 @@
+---
+networks:
+  kx:
+    name: kx
+    driver: bridge
+
+services:
+  sp-worker:
+    image: ${kxi_img_sp}
+    hostname: kxi-sp
+    restart: "always"
+    environment:
+      - KXI_LOG_LEVELS=default:info       
+      - KXI_SP_SPEC=/mnt/config/sp/taq.py  # Python file where our Kafka stream is coming from
+      - KXI_PORT=${kxi_port_sp}
+      - KX_KURL_DISABLE_AUTO_REGISTER=1
+      - RT_TOPIC_PREFIX=rt-
+      - RT_STREAM=data
+    ports:
+      - ${kxi_port_sp}:${kxi_port_sp}
+    volumes:
+      - ${kxi_dir_lic}:/opt/kx/lic 
+      - ${kxi_dir_config}:/mnt/config 
+      - ${kxi_dir_logs_sp}:/sp 
+    networks: [kx]
+    env_file:
+      - .env 
+    stdin_open: true
+    tty: true   
