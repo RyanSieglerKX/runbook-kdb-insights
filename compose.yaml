@@ -13,7 +13,7 @@ services:
       - kxi-rt   
     environment:
       - KXI_LOG_LEVELS=default:info       
-      - KXI_SP_SPEC=/mnt/config/sp/taq.py
+      - KXI_SP_SPEC=/mnt/config/sp/taq.py  # Python file where our Kafka stream is coming from
       - KXI_PORT=${kxi_port_sp}
       - KX_KURL_DISABLE_AUTO_REGISTER=1
       - RT_TOPIC_PREFIX=rt-
@@ -23,7 +23,7 @@ services:
     volumes:
       - ${kxi_dir_lic}:/opt/kx/lic 
       - ${kxi_dir_config}:/mnt/config 
-      - ${kxi_dir_logs_sp}:/sp  ########## is this correct?
+      - ${kxi_dir_logs_sp}:/sp 
     networks: [kx]
     env_file:
       - .env 
@@ -51,12 +51,13 @@ services:
       - KXI_NAME=kxi-agg
       - KXI_PORT=${kxi_port_agg}
       - KXI_SG_RC_ADDR=kxi-rc:${kxi_port_rc}
-      - KXI_CUSTOM_FILE=/mnt/config/src/agg/custom.q  # Optional for custom APIs
+      #- KXI_CUSTOM_FILE=/mnt/config/src/agg/custom.q  # Optional for custom APIs
       - KXI_LOG_FORMAT=${kxi_log_format}
       - KXI_LOG_LEVELS=default:${kxi_log_level}
+      # Package with custom APIs
       - KXI_PACKAGES=custom:1.0.0
       - KX_PACKAGE_PATH=/opt/kx/packages/
-      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/agg-config.json
+      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/agg-config.json       # For gathering metrics
     deploy:  # Optional: deploy multiple replicas.
       mode: replicated
       replicas: 1
@@ -99,7 +100,7 @@ services:
       - KXI_ASSEMBLY_FILE=/mnt/config/assembly.yaml
       - KXI_SG_RC_ADDR=kxi-rc:${kxi_port_rc}
       - KXI_SM_ADDR=kxi-sm:${kxi_port_sm}
-      - KXI_CUSTOM_FILE=/mnt/config/src/da/custom.api.q  # Optional for custom APIs
+      #- KXI_CUSTOM_FILE=/mnt/config/src/da/custom.api.q  # Optional for custom APIs
       - KXI_LOG_FORMAT=${kxi_log_format}
       - KXI_LOG_LEVELS=default:${kxi_log_level}
       - KXI_ALLOWED_SBX_APIS=${kxi_apis}
@@ -108,11 +109,9 @@ services:
       - RT_REPLICAS=1
       - KXI_SECURE_ENABLED=0
       #- KXI_LATE_DATA=true
-      # Optional for gathering metrics
-      #- KXI_CONFIG_FILE=/metrics-cfg/da-config.json  
-      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/da-config.json 
-      # Optional for gathering metrics
+      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/da-config.json      # For gathering metrics
       #- KXI_DA_START_SIDECARS=true
+      # Package with custom APIs 
       - KXI_PACKAGES=custom:1.0.0
       - KX_PACKAGE_PATH=/opt/kx/packages
     networks: [kx]
@@ -121,7 +120,6 @@ services:
       - ${kxi_dir_db}:/mnt/db
       - ${kxi_dir_logs}:/mnt/logs
       - ${kxi_dir_lic}:/opt/kx/lic
-      - ${kxi_dir_sidecar_cfg}:/metrics-cfg/  # Optional for gathering metics (IS THIS CORRECT??)
       - ${kxi_dir_pkgs}:/opt/kx/packages
     ports:
       - ${kxi_port_da}:${kxi_port_da}
@@ -132,7 +130,7 @@ services:
   kxi-sm:
     hostname: kxi-sm
     image: ${kxi_img_sm}
-    #command: -p 10001 #Necessary? 5/26
+    #command: -p 10001
     environment:
       - KXI_NAME=kxi-sm
       - KXI_SC=sm
@@ -142,11 +140,10 @@ services:
       - KXI_LOG_LEVELS=default:${kxi_log_level}
       - KXI_RT_SM_LOG_PATH=/mnt/logs/sm
       - KXI_RT_EOI_LOG_PATH=/mnt/logs/eoi
-      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/sm-config.json  #/mnt/config/metrics-cfg/sm-config.json
-      - KXI_ALLOWED_SBX_APIS=${kxi_apis}  ##added this
+      - KXI_CONFIG_FILE=/mnt/config/metrics/sidecar/sm-config.json           # For gathering metrics
       - RT_TOPIC_PREFIX=rt-
       - RT_STREAM=data
-      - RT_LOG_PATH=/mnt/logs/sm   ##Is this the right path?
+      - RT_LOG_PATH=/mnt/logs/sm   
       - RT_REPLICAS=1
       #- KXI_LATE_DATA=true
     ports:
@@ -176,7 +173,6 @@ services:
       - RT_LOGLEVEL_CONSOLE=${kxi_log_level}
       - RT_QURAFT_LOG_LEVEL=${kxi_log_level}
       - RT_SEQ_SESSION_PATH=/s/session
-      - RT_LOG_LEADER=                      ##### remove?
       - RAFT_HEARTBEAT=${kxi_rt_heartbeat}
       - RAFT_LOG_SIZE=${kxi_rt_log_size}
       - RAFT_CHUNK_SIZE=${kxi_rt_chunk_size}
@@ -187,5 +183,5 @@ services:
     restart: unless-stopped
     networks: [kx]
     volumes:
-      - ${kxi_dir_logs_rt}:/s   ## Is this the right path?
+      - ${kxi_dir_logs_rt}:/s   
       - ${kxi_dir_lic}:/opt/kx/lic
