@@ -99,7 +99,7 @@ services:
       - KXI_ASSEMBLY_FILE=/mnt/config/assembly.yaml
       - KXI_SG_RC_ADDR=kxi-rc:${kxi_port_rc}
       - KXI_SM_ADDR=kxi-sm:${kxi_port_sm}
-      - KXI_CUSTOM_FILE=/mnt/config/src/da/custom.q  # Optional for custom APIs
+      - KXI_CUSTOM_FILE=/mnt/config/src/da/custom.api.q  # Optional for custom APIs
       - KXI_LOG_FORMAT=${kxi_log_format}
       - KXI_LOG_LEVELS=default:${kxi_log_level}
       - KXI_ALLOWED_SBX_APIS=${kxi_apis}

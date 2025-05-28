@@ -144,7 +144,7 @@ mounts:
 
 elements:
   dap:
-    smEndpoints: kxi-sm:10001   ##REMOVE THIS?
+    #smEndpoints: kxi-sm:10001   ##REMOVE THIS?
     instances:
       dap:
         mountList: [rdb, idb, hdb]
