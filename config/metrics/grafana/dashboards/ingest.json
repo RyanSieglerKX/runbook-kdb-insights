@@ -134,7 +134,7 @@
           "useBackend": false
         }
       ],
-      "title": "Total Messages Out - RT",
+      "title": "Total Messages In/Out - RT",
       "type": "timeseries"
     },
     {
