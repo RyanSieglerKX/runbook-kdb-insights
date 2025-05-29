@@ -156,6 +156,9 @@ curl -X POST http://localhost:8080/custom/aj   -H 'Content-Type: application/jso
 
 ## Query in q
 To interact with the system using q (if you have q installed via step 10 in the setup):
+
+In your terminal, `$ q` will open a q interactive session, `q) \\` will exit the q session. 
+
 ```bash
 q) gw:hopen `:localhost:5050
 \\ Query
