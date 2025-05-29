@@ -56,7 +56,7 @@ You will learn to:
     hostname = http://localhost:8080
     ```
 7.  Ensure [Docker](https://www.docker.com/products/docker-desktop/) is installed and running with the WSL integration setting enabled.
-8.  Ensure you have access to the KX Docker repo (`portal.dl.kx.com`) and generate a token.
+8.  Ensure you have access to the KX Docker repo ([portal.dl.kx.com](https://portal.dl.kx.com/)) and generate a token.
 9.  Log in to the KX Docker repository:
     ```bash
     docker login portal.dl.kx.com -u <user> -p <bearer token>
