@@ -1,6 +1,17 @@
 # kdb Insights Runbook 🚀
 
-A local docker deployment of Insights SDK Microservices.
+Follow this runbook to create a local docker deployment of Insights SDK Microservices.
+
+The deployment will consume a live Kafka stream of synthetic capital markets data (trades & quotes) through a [Stream Processor](https://code.kx.com/insights/1.13/microservices/stream-processor/index.html) (SP) into a kdb Insights Microservices architecture via (Reliable Transport)[https://code.kx.com/insights/1.13/microservices/rt/index.html] (RT), as opposed to a tickerplant, to resiliantly transport data into and between the microservices.
+
+You will learn to:
+- Setup your environment to run kdb Insights Microservices
+- Deploy a microservices architecture
+- Deploy and view Grafana metrics
+- Publish data (csv & Kafka stream)
+- Query with q and through the KXI CLI with SQL
+- Run custom UDAs (APIs)
+- View logs
 
 ## Architecture Diagram 🏗️
 
@@ -44,7 +55,7 @@ A local docker deployment of Insights SDK Microservices.
     usage = microservices
     hostname = http://localhost:8080
     ```
-7.  Ensure [Docker](https://www.docker.com/products/docker-desktop/) is installed and running.
+7.  Ensure [Docker](https://www.docker.com/products/docker-desktop/) is installed and running with the WSL integration setting enabled.
 8.  Ensure you have access to the KX Docker repo (`portal.dl.kx.com`) and generate a token.
 9.  Log in to the KX Docker repository:
     ```bash
@@ -76,6 +87,8 @@ docker compose --env-file ./.env -f compose-metrics.yaml up --build
 
 Now you can open the Grafana metrics dashboard in your local browser: `localhost:3000`
 
+Set the refresh rate to 5 seconds in the upper right corner of the dashboards. It will take a few seconds for metrics to show up.
+
 Keep the metrics dashboards up in a separate window so you can see the live metrics as you work through the runbook.
 
 ## Basic Architecture Querying & Publishing
@@ -100,17 +113,23 @@ kxi query --sql 'SELECT * FROM trade'
 docker compose --env-file ./.env -f compose-stream.yaml up --build
 ```
 
+You should see some interesting changes in your metrics dashboards a few seconds after starting the SP!
+
 #### Query the trade table to see the data flowing (try running this multiple consecutive times):
 ```bash
 kxi query --sql 'SELECT count(*) FROM trade'
 ```
 
-## Custom API
+## Custom API / [UDA](https://code.kx.com/insights/1.13/api/database/uda/how-to-uda-overview.html) (User Defined Analytics)
 
-#### List the available packages (This is where our custom APIs are defined):
+#### List the available [packages](https://code.kx.com/insights/1.13/api/packaging/) (This is where our custom APIs are defined):
 ```bash
 kxi package list
 ```
+
+In the custom package there are two UDAs (view the code in ./config/packages/custom/1.0.0/):
+- .example.daAPI : A simple function that multiplies a specified column in a given table by a multiplier
+- .custom.aj : Performs an aj (as-of join) between the trades and quotes table for a given symbol.
 
 #### Run a simple sample API:
 ```bash
@@ -128,6 +147,17 @@ curl -X POST http://localhost:8080/custom/aj   -H 'Content-Type: application/jso
     "quotesTable": "quote",
     "sym": "AAPL"
   }'
+```
+
+
+## Query in q
+To interact with the system using q (if you have q installed via step 10 in the setup):
+```bash
+q) gw:hopen `:localhost:5050
+\\ Query
+q) gw(`.kxi.sql;enlist[`query]!enlist"SELECT * FROM trade WHERE (sym = 'AAPL')";`;(0#`)!())
+\\ Custom API
+q) gw(`.custom.aj;(`tradesTable;`quotesTable;`sym)!(`trade;`quote;`AAPL);`;(0#`)!())
 ```
 
 ## View Logs
@@ -149,26 +179,16 @@ docker compose logs -f kxi-da
 docker compose logs -f sp-worker
 ```
 
-## Query in q
-To interact with the system using q:
+## Shutdown
+When restarting, it is helpful to shutdown and remove old containers including the metrics and stream processor containers:
 ```bash
-q) gw:hopen `:localhost:5050
-\\ Query
-q) gw(`.kxi.sql;enlist[`query]!enlist"SELECT * FROM trade WHERE (sym = 'AAPL')";`;(0#`)!())
-\\ Custom API
-q) gw(`.custom.aj;(`tradesTable;`quotesTable;`sym)!(`trade;`quote;`AAPL);`;(0#`)!())
+docker compose down --remove-orphans
 ```
 
 ## Reset the System
 This will wipe out all data in the data directory. ONLY DO THIS AFTER SHUTTING DOWN ALL CONTAINERS/SERVICES.
 ```bash
 ./RESET_DB.sh
-```
-
-## Helpful Tip
-When restarting, it is helpful to remove old containers including the metrics and stream processor container:
-```bash
-docker compose down --remove-orphans
 ```
 
 ## Community & Ask Questions
