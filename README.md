@@ -131,7 +131,7 @@ kxi query --sql 'SELECT count(*) FROM trade'
 kxi package list
 ```
 
-In the custom package there are two UDAs (view the code in ./config/packages/custom/1.0.0/):
+In the custom package there are two UDAs (view the code in ./custom/1.0.0/):
 - **.example.daAPI** : A simple function that multiplies a specified column in a given table by a multiplier.
 - **.custom.aj** : Performs an aj (as-of join) between the trades and quotes table for a given symbol.
 
