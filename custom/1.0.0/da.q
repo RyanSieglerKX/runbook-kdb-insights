@@ -13,3 +13,30 @@
     .sapi.metaReturn[`type`description!(98h;"Result of the select.")],
     .sapi.metaMisc[enlist[`safe]!enlist 1b]
     ];
+
+
+
+
+
+
+
+.custom.aj:{[tradesTable; quotesTable; sym]
+    argsT:`table`startTS`endTS`filter!(`trade;.z.d-1;.z.d+1;enlist(=;`sym;enlist`AAPL));
+    argsQ:`table`startTS`endTS`filter!(`quote;.z.d-1;.z.d+1;enlist(=;`sym;enlist`AAPL));
+    trade:.kxi.selectTable argsT;
+    quote:.kxi.selectTable argsQ;
+    trade: `sym`time xasc trade;
+    quote: `sym`time xasc quote;
+    res: aj[`sym`time;trade;quote];
+    (sym;res)
+    }
+
+.da.registerAPI[`.custom.aj;
+    .kxi.metaDescription["As-of join between trades and quotes tables (no time constraints)"],
+    .kxi.metaParam[`name`type`isReq`description!(`tradesTable;-11h;1b;"Name of trades table")],
+    .kxi.metaParam[`name`type`isReq`description!(`quotesTable;-11h;1b;"Name of quotes table")],
+    .kxi.metaParam[`name`type`isReq`description!(`sym;-11h;1b;"Ticker symbol")],
+    .kxi.metaReturn[`type`description!(98h;"Table with as-of joined quotes")],
+    .kxi.metaMisc[enlist[`safe]!enlist 1b]
+    ]
+
