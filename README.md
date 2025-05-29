@@ -2,7 +2,7 @@
 
 Follow this runbook to create a local docker deployment of Insights SDK Microservices.
 
-The deployment will consume a live Kafka stream of synthetic capital markets data (trades & quotes) through a [Stream Processor](https://code.kx.com/insights/1.13/microservices/stream-processor/index.html) (SP) into a kdb Insights Microservices architecture via (Reliable Transport)[https://code.kx.com/insights/1.13/microservices/rt/index.html] (RT), as opposed to a tickerplant, to resiliantly transport data into and between the microservices.
+The deployment will consume a live Kafka stream of synthetic capital markets data (trades & quotes) through a [Stream Processor](https://code.kx.com/insights/1.13/microservices/stream-processor/index.html) (SP) into a kdb Insights Microservices architecture via [Reliable Transport][https://code.kx.com/insights/1.13/microservices/rt/index.html] (RT), as opposed to a tickerplant, to resiliantly transport data into and between the microservices.
 
 You will learn to:
 - Setup your environment to run kdb Insights Microservices
@@ -68,6 +68,7 @@ You will learn to:
     export QHOME=~/q
     export PATH=~/q/l64/:$PATH
     ```
+In your terminal, `$ q` will open a q interactive session, `q) \\` will exit the q session. 
 
 Now we are set up to build the kdb architecture with microservices!
 
