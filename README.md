@@ -159,7 +159,7 @@ To interact with the system using q (if you have q installed via step 10 in the 
 
 In your terminal, `$ q` will open a q interactive session, `q) \\` will exit the q session. 
 
-```bash
+```q
 q) gw:hopen `:localhost:5050
 \\ Query
 q) gw(`.kxi.sql;enlist[`query]!enlist"SELECT * FROM trade WHERE (sym = 'AAPL')";`;(0#`)!())
