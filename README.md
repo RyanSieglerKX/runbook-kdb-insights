@@ -4,7 +4,7 @@ A local docker deployment of Insights SDK Microservices.
 
 ## Architecture Diagram 🏗️
 
-![Architecture Diagram](./img/architecture.png)
+![Architecture Diagram](./img/architecture.JPG)
 
 ---
 
@@ -16,13 +16,13 @@ A local docker deployment of Insights SDK Microservices.
 
 ## Links 🔗
 
--   Microservices <font color="grey">*(<- Add link to your Microservices documentation/page here if available)*</font>
+-   [Microservices](https://code.kx.com/insights/microservices) 
 
 ---
 
 ## Setup 🛠️
 
-1.  Clone the Insights Runbook into your environment (like Linux or wsl), for example into the `/home` directory.
+1.  Clone the [Insights Runbook](https://github.com/RyanSieglerKX/runbook-kdb-insights) into your environment (like Linux or wsl), for example into the `/home` directory.
     ```bash
     cd /home/runbook-kdb-insights
     ```
@@ -31,12 +31,12 @@ A local docker deployment of Insights SDK Microservices.
     mkdir -p data/db data/logs lic
     chmod 777 -R data
     ```
-3.  Sign-up for Insights SDK Free Trial: Follow emailed instructions to download your license file.
+3.  Sign-up for [Insights SDK Free Trial](https://kx.com/kdb-insights-sdk-personal-edition-download/): Follow emailed instructions to download your license file.
 4.  Copy your license file into the `./lic` directory.
     ```bash
     cp /path/to/k[4,c,x].lic lic/
     ```
-5.  Install KXI CLI (Recommend using `uv` method).
+5.  [Install KXI CLI](https://code.kx.com/insights/1.13/enterprise/cli/install.html) (Recommend using `uv` method).
 6.  Configure KXI CLI:
     To use the _kdb Insights CLI_ replace the contents of `~/.insights/cli-config` with:
     ```ini
@@ -44,7 +44,7 @@ A local docker deployment of Insights SDK Microservices.
     usage = microservices
     hostname = http://localhost:8080
     ```
-7.  Ensure Docker is installed.
+7.  Ensure [Docker](https://www.docker.com/products/docker-desktop/) is installed and running.
 8.  Ensure you have access to the KX Docker repo (`portal.dl.kx.com`) and generate a token.
 9.  Log in to the KX Docker repository:
     ```bash
@@ -79,40 +79,40 @@ Now you can open the Grafana metrics dashboard in your local browser: `localhost
 Keep the metrics dashboards up in a separate window so you can see the live metrics as you work through the runbook.
 
 ## Basic Architecture Querying & Publishing
-### Query the DAP
+#### Query the DAP
 ```bash
 kxi query --sql 'SELECT * FROM trade'
 ```
 
-### Publish one row to trade table:
+#### Publish one row to trade table:
 ```bash
 kxi publish --mode rt --file-format csv --table trade --data config/trade.csv --endpoint :localhost:5002
 ```
 
-### Query the DAP to see the published row
+#### Query the DAP to see the published row
 ```bash
 kxi query --sql 'SELECT * FROM trade'
 ```
 
 ## Stream Processing
-### Start Stream Processor with Kafka feed:
+#### Start Stream Processor with Kafka feed:
 ```bash
 docker compose --env-file ./.env -f compose-stream.yaml up --build
 ```
 
-### Query the trade table to see the data flowing (try running this multiple consecutive times):
+#### Query the trade table to see the data flowing (try running this multiple consecutive times):
 ```bash
 kxi query --sql 'SELECT count(*) FROM trade'
 ```
 
 ## Custom API
 
-### List the available packages (This is where our custom APIs are defined):
+#### List the available packages (This is where our custom APIs are defined):
 ```bash
 kxi package list
 ```
 
-### Run a simple sample API:
+#### Run a simple sample API:
 ```bash
 curl -X POST http://localhost:8080/example/daAPI   -H 'Content-Type: application/json'   -d '{
     "table": "trade",
@@ -121,7 +121,7 @@ curl -X POST http://localhost:8080/example/daAPI   -H 'Content-Type: application
   }'
 ```
 
-### Run a As-Of join API:
+#### Run a As-Of join API:
 ```bash
 curl -X POST http://localhost:8080/custom/aj   -H 'Content-Type: application/json'   -d '{
     "tradesTable": "trade",
@@ -166,7 +166,7 @@ This will wipe out all data in the data directory. ONLY DO THIS AFTER SHUTTING D
 ```
 
 ## Helpful Tip
-When restarting, it is helpful to remove old containers:
+When restarting, it is helpful to remove old containers including the metrics and stream processor container:
 ```bash
 docker compose down --remove-orphans
 ```
