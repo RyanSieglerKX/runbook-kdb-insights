@@ -1,6 +1,6 @@
 # kdb Insights Runbook 🚀
 
-Follow this runbook to create a local docker deployment of Insights SDK Microservices.
+Follow this runbook to create a local Docker deployment of Insights SDK Microservices.
 
 The deployment will consume a live Kafka stream of synthetic capital markets data (trades & quotes) through a [Stream Processor](https://code.kx.com/insights/1.13/microservices/stream-processor/index.html) (SP) into a kdb Insights Microservices architecture via [Reliable Transport](https://code.kx.com/insights/1.13/microservices/rt/index.html) (RT), as opposed to a tickerplant, to resiliantly transport data into and between the microservices.
 
