@@ -72,6 +72,8 @@ In your terminal, `$ q` will open a q interactive session, `q) \\` will exit the
 
 Now we are set up to build the kdb architecture with microservices!
 
+**Tip:** It will be helpful to open several WSL terminals, all at the `/home/runbook-kdb-insights` directory. Use separate WSL terminals to run each of the Docker compose files (compose, compose-metrics, compose-stream), and have another terminal open for running queries and viewing logs.
+
 ---
 
 ## Build the main microservices architecture 🧱
