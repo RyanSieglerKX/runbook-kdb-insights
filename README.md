@@ -80,12 +80,12 @@ Now we are set up to build the kdb architecture with microservices!
 
 (using `compose.yaml`):
 ```bash
-docker compose up --build
+docker compose up 
 ```
 
 ## Metrics
 ```bash
-docker compose --env-file ./.env -f compose-metrics.yaml up --build
+docker compose --env-file ./.env -f compose-metrics.yaml up 
 ```
 
 Now you can open the Grafana metrics dashboard in your local browser: `localhost:3000`
@@ -114,7 +114,7 @@ kxi query --sql 'SELECT * FROM trade'
 ## Stream Processing
 #### Start Stream Processor with Kafka feed:
 ```bash
-docker compose --env-file ./.env -f compose-stream.yaml up --build
+docker compose --env-file ./.env -f compose-stream.yaml up 
 ```
 
 You should see some interesting changes in your metrics dashboards a few seconds after starting the SP!
