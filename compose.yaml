@@ -186,3 +186,4 @@ services:
     volumes:
       - ${kxi_dir_logs_rt}:/s   
       - ${kxi_dir_lic}:/opt/kx/lic
+    user: root
