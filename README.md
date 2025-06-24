@@ -195,6 +195,10 @@ docker compose down --remove-orphans
 ## Reset the System
 This will wipe out all data in the data directory. ONLY DO THIS AFTER SHUTTING DOWN ALL CONTAINERS/SERVICES.
 ```bash
+chmod 777 ./RESET_DB.sh
+```
+
+```bash
 ./RESET_DB.sh
 ```
 
