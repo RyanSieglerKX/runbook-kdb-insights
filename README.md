@@ -40,7 +40,7 @@ You will learn to:
 2.  Setup the repository:
     ```bash
     mkdir -p data/db data/logs lic
-    chmod 777 -R data
+    chmod -R 777 data
     ```
 3.  Sign-up for [Insights SDK Free Trial](https://kx.com/kdb-insights-sdk-personal-edition-download/): Follow emailed instructions to download your license file.
 4.  Copy your license file into the `./lic` directory.
