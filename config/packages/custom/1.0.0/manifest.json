@@ -10,7 +10,7 @@
         ]
     },
     "entrypoints": {
-        "aggregator": "agg.q",
-        "data-access": "da.q"
+        "aggregator": "myUDA.q",
+        "data-access": "myUDA.q"
     }
 }
