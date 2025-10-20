@@ -82,7 +82,7 @@ services:
       - KXI_LOG_LEVELS=default:${kxi_log_level}
     ports:
       - ${kxi_port_gw_qipc}:${kxi_port_gw_qipc}
-      - ${kxi_port_gw_http}:${kxi_port_gw_http}
+      # - ${kxi_port_gw_http}:${kxi_port_gw_http}
       - ${kxi_port_gw_metrics}:${kxi_port_gw_metrics}
     deploy:  # Optional: deploy multiple replicas.
       mode: replicated

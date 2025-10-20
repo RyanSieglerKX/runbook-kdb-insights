@@ -95,7 +95,7 @@ services:
   grafana:
     image: grafana/grafana-oss
     ports:
-      - 3000:3000
+      - 2999:3000
     networks: [kx]
     environment:
       # - GF_SECURITY_ADMIN_USER=admin
